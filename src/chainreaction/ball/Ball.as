@@ -97,6 +97,5 @@ package chainreaction.ball
 		{
 			_radius = value;
 		}
-
-	} // end class
-} // end package
+	}
+}

@@ -13,7 +13,7 @@ package
 	 * ...
 	 * @author Raphael Luchini
 	 */
-	[SWF(width = "800", height = "600",  backgroundColor="#2E2E2E", framerate = "31")]
+	[SWF(width = "800", height = "600",  backgroundColor = "#2E2E2E", framerate = "31")]
 	public class Main extends Sprite 
 	{
 		public var restart:MovieClip;
@@ -39,6 +39,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			
 			restart = new RestartButton();
+			restart.buttonMode = true;
 			restart.x = stage.stageWidth - restart.width;
 			restart.addEventListener(MouseEvent.CLICK, reset);
 			addChild(restart);
@@ -46,9 +47,7 @@ package
 			game = new Game();
 			addChildAt(game, 0);
 			
-			
-			
-			addChild(new FPS());
+			addChild(new FPS(0xCCCCCC, 0xCCCCCC, 0xFF0000, 0.8));
 		}
 		
 		private function reset(e:MouseEvent):void 
@@ -60,5 +59,5 @@ package
 		}
 		
 	}
-	
+
 }

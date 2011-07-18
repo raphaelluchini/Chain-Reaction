@@ -103,7 +103,7 @@ package chainreaction.visual
 		{
 			mouseMoveSignal.remove(onMouseMove);
 			_controller.getStarterBall().clickSignal.remove(onMouseClick);
-			controller.explodeStarterBall();
+			_controller.explodeStarterBall();
 		}
 		
 		private function onMouseMove(event:MouseEvent):void 

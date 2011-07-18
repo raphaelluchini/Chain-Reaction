@@ -7,7 +7,8 @@ package chainreaction.ball
 	import org.osflash.signals.natives.NativeSignal;
 	import org.osflash.signals.SingleSignal;
 	
-	public class BaseBall extends Sprite{
+	public class BaseBall extends Sprite
+	{
 
 		protected var _hitted:Boolean;
 		public var explodeSignal:SingleSignal
@@ -50,5 +51,5 @@ package chainreaction.ball
 		{
 			_hitted = value;
 		}
-	} // end class
-} // end package
+	}
+}

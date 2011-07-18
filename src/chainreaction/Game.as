@@ -28,21 +28,30 @@ package chainreaction
 			removeEventListener(Event.ADDED_TO_STAGE, addedOnStage);
 			stage.addEventListener(Event.RESIZE, onResize);
 			
+			controller = new Controller();
+			controller.gameWidth = stage.stageWidth;
+			controller.gameHeight = stage.stageHeight;
+			controller.gameSignal.add(gameListener);
+			
 			levelUp = new LevelUp();
 			levelUp.alpha = 0;
 			levelUp.x = (stage.stageWidth / 2) - ( levelUp.width / 2);
 			levelUp.y = 200;
+			levelUp.mouseEnabled = false;
 			addChild(levelUp);
 			
 			message = new Message();
 			message.alpha = 0;
 			message.x = (stage.stageWidth / 2) - ( message.width / 2);
 			message.y = (stage.stageHeight / 2) - ( message.height / 2);
-			addChild(message);
+			message.mouseEnabled = false;
+			message.enabled = false;
+			message.mouseChildren = false;
 			
 			newGameButton = new NewGameButton();
 			newGameButton.buttonMode = true;
-			newGameButton.addEventListener(MouseEvent.CLICK, onClickNewGame);
+			newGameButton.mouseChildren = false;
+			newGameButton.addEventListener(MouseEvent.MOUSE_UP, onClickNewGame);
 			newGameButton.x = (stage.stageWidth / 2) - ( newGameButton.width / 2);
 			newGameButton.y = (stage.stageHeight / 2) - ( newGameButton.height / 2);
 			addChild(newGameButton)
@@ -50,43 +59,31 @@ package chainreaction
 		
 		private function onResize(event:Event):void 
 		{
-			levelUp.x = (stage.stageWidth / 2) - ( levelUp.width / 2);
-			
-			message.x = (stage.stageWidth / 2) - ( message.width / 2);
-			message.y = (stage.stageHeight / 2) - ( message.height / 2);
-			
-			newGameButton.x = (stage.stageWidth / 2) - ( newGameButton.width / 2);
-			newGameButton.y = (stage.stageHeight / 2) - ( newGameButton.height / 2);
-		}
-		
-		private function createController():void 
-		{
-			controller = new Controller();
-			controller.gameWidth = stage.stageWidth;
-			controller.gameHeight = stage.stageHeight;
-			controller.gameSignal.add(gameListener);
-		}
-		
-		private function createGame():void 
-		{
-			if (!gameInit)
+			if (stage)
 			{
-				createController()
+				levelUp.x = (stage.stageWidth / 2) - ( levelUp.width / 2);
+			
+				message.x = (stage.stageWidth / 2) - ( message.width / 2);
+				message.y = (stage.stageHeight / 2) - ( message.height / 2);
+				
+				newGameButton.x = (stage.stageWidth / 2) - ( newGameButton.width / 2);
+				newGameButton.y = (stage.stageHeight / 2) - ( newGameButton.height / 2);
 			}
-			gameInit = true;
-			
-			
-			newGameButton.removeEventListener(MouseEvent.CLICK, onClickNewGame);
-			newGameButton.alpha = 0;
-			newGameButton.buttonMode = false;
-			
-			stageGame = new StageGame(controller);
-			addChildAt(stageGame, 0);
 		}
 		
 		private function onClickNewGame(e:MouseEvent):void 
 		{
-			createGame();
+			newGameButton.removeEventListener(MouseEvent.CLICK, onClickNewGame);
+			removeChild(newGameButton);
+			
+			if (stageGame)
+			{
+				stageGame.dispose();
+				stageGame = null;
+			}
+			
+			stageGame = new StageGame(controller);
+			addChildAt(stageGame, 0);
 		}
 		
 		private function gameListener(response:String):void 
@@ -112,18 +109,23 @@ package chainreaction
 						gameWin = false;
 						controller.nextLevel();
 						newGameButton.addEventListener(MouseEvent.CLICK, onClickNewGame);
-						newGameButton.alpha = 1;
+						onResize(null);
+						addChild(newGameButton);
 						newGameButton.buttonMode = true;
 					}
 					else
 					{
 						message.txt.text = "Finish - Win";
+						onResize(null);
+						addChild(message);
 						message.alpha = 1;		
 					}
 				}
 				else
 				{
 					message.txt.text = "Finish - Lose";
+					onResize(null);
+					addChild(message);
 					message.alpha = 1;
 				}
 				
@@ -132,6 +134,5 @@ package chainreaction
 				removeChild(stageGame);
 			}
 		}
-
 	}
 }

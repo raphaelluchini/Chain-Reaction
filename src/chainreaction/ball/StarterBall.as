@@ -7,6 +7,7 @@ package chainreaction.ball
 	import flash.events.MouseEvent;
 	import org.osflash.signals.natives.NativeSignal;
 	import org.osflash.signals.SingleSignal;
+	
 	/**
 	 * ...
 	 * @author Raphael Luchini
@@ -25,21 +26,18 @@ package chainreaction.ball
 			_ballGraphic.graphics.endFill();
 			addChild(_ballGraphic);
 			
-			addEventListener(Event.ADDED_TO_STAGE, onAdded);
-			
 			excludeSignal = new SingleSignal(BaseBall);
-		}
-		
-		private function onAdded(e:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-			clickSignal = new NativeSignal(stage, MouseEvent.MOUSE_DOWN);
+			
+			clickSignal = new NativeSignal(this, MouseEvent.CLICK);
 			clickSignal.addOnce(onClickAction);
 		}
 		
 		private function onClickAction(event:MouseEvent):void 
 		{
-			explode();
+			if (this == event.currentTarget)
+			{
+				explode();
+			}
 		}
 		
 		override public function dispose():void 

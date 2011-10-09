@@ -19,19 +19,19 @@ package
 		public var restart:MovieClip;
 		public var game:Game;
 		
-		public function Main():void 
+		public function Main():void
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 			stage.addEventListener(Event.RESIZE, onResize);
 		}
 		
-		private function onResize(e:Event):void 
+		private function onResize(e:Event):void
 		{
 			restart.x = stage.stageWidth - restart.width;
 		}
 		
-		private function init(e:Event = null):void 
+		private function init(e:Event = null):void 	
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
@@ -50,7 +50,7 @@ package
 			addChild(new FPS(0xCCCCCC, 0xCCCCCC, 0xFF0000, 0.8));
 		}
 		
-		private function reset(e:MouseEvent):void 
+		private function reset(e:MouseEvent):void
 		{
 			removeChild(game);
 			game = null;
